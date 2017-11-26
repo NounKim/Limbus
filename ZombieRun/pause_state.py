@@ -29,7 +29,7 @@ def handle_events(self):
         elif event.type == SDL_KEYDOWN and event.key == SDLK_p:
             game_framework.change_state(main_state)
 
-def enter(self):
+def enter():
     pass
 
 
