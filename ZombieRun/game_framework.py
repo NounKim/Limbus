@@ -107,6 +107,12 @@ def test_game_framework():
     start_state = TestGameState('StartState')
     run(start_state)
 
+def frame_time():
+    current_time = time.clock()
+    frame_time = time.clock() - current_time
+    current_time += frame_time
+    return frame_time
+
 
 
 if __name__ == '__main__':

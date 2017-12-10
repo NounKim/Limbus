@@ -1,13 +1,15 @@
 from pico2d import *
-import time
+import game_framework
 
 class Time:
     def __init__(self):
-        self.current_time = time.time()
         self.timer = 0
-        self.frame_time = 0
+        Time.font = load_font('ENCR10B.TTF', 16)
 
     def update(self):
-        frame_time = time.time() - self.current_time
-        self.timer += frame_time
+        self.timer += game_framework.frame_time
         delay(0.01)
+
+    def draw(self):
+        Time.font.draw(400, 400, 'Time: %3.2f' % self.timer, (255, 255, 0))
+
