@@ -15,6 +15,8 @@ class Boy:
         self.count = 0
         self.sound_end = 0
         self.sound_count = 0
+        self.sound_count2_start = 0
+        self.sound_count2 = 0
         if Boy.image == None:
             Boy.image = load_image('hero.png')
         if Boy.sound == None:
@@ -26,7 +28,9 @@ class Boy:
     def hurt(self, mob):
         self.sound_end = 1
         self.sound_count = 0
-        Boy.sound = load_wav('scream.ogg')
+        self.sound_count2_start = 0
+        self.sound_count2 = 0
+        Boy.sound = load_wav('scream.wav')
         Boy.sound.set_volume(32)
         self.sound.play()
 
@@ -37,9 +41,20 @@ class Boy:
         if self.sound_end == 1:
             self.sound_count += 1
 
-        if self.sound_count == 100:
+        if self.sound_count == 50:
             self.sound_end = 0
             self.sound_count = 0
+            self.sound_count2_start = 1
+            Boy.sound = load_wav('crying.wav')
+            Boy.sound.set_volume(64)
+            Boy.sound.repeat_play()
+
+        if self.sound_count2_start == 1:
+            self.sound_count2 += 1
+
+        if self.sound_count2 == 250:
+            self.sound_count2_start = 0
+            self.sound_count2 = 0
             Boy.sound = load_wav('running-pant.wav')
             Boy.sound.set_volume(64)
             Boy.sound.repeat_play()
