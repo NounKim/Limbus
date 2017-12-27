@@ -38,3 +38,20 @@ class Land:
 
     def draw(self):
         self.image.draw(self.x, self.y)
+
+
+class City:
+    image = None
+    def __init__(self):
+        self.x, self.y = 800,300
+        if City.image == None:
+            City.image = load_image('city.png')
+
+    def update(self, frame_time):
+        self.x -= frame_time*50
+        if self.x <= 0:
+            print('x')
+            self.x = 800
+
+    def draw(self):
+        self.image.draw(self.x, self.y)

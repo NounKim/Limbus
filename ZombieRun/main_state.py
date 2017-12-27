@@ -3,38 +3,52 @@ from pico2d import *
 
 import game_framework
 import title_state
+import result_state
 import timer
-from character import Boy
+from character import Boy, Death
 from enemys import Enemy
-from land import Back_ground, Land
+from land import Back_ground, Land, City
 import pause_state
+import json
 
 
 character = None
 enemy = None
 back_ground = None
 land = None
+city = None
 pause_flag=False
+death = None
+time = None
+font = None
 
 def create_world():
-    global character, back_ground, land, enemy
+    global character, back_ground, land, enemy, city, death, time
 
     character = Boy()
+    death = Death(character)
     enemy = [Enemy() for i in range(5)]
     back_ground = Back_ground()
     land = Land()
+    city = City()
+    time = get_time()
 
 def destroy_world():
-    global character, back_ground, land, enemy
+    global character, back_ground, land, enemy, city, death
 
     del(character)
     del(enemy)
     del(back_ground)
     del(land)
+    del(city)
+    del(death)
 
 def enter():
+    global font
     #game_framework.reset_time()
     create_world()
+    if font == None:
+        font = load_font('ENCR10B.TTF', 24)
 
 def exit():
     destroy_world()
@@ -55,7 +69,10 @@ def handle_events(frame_time):
                 mob.handle_event(event)
 
 def update(frame_time):
+    global time
+    time -= -get_time()
     character.update(frame_time)
+    death.update(character)
 
     for mob in enemy:
         if collide(character, mob):
@@ -70,7 +87,11 @@ def update(frame_time):
 
     back_ground.update(frame_time)
     land.update(frame_time)
+    city.update(frame_time)
 
+    if collide(character, death):
+        result_state.get_Time(time)
+        game_framework.change_state(result_state)
     #if collide(character,enemys):
     #    pass
 
@@ -83,12 +104,15 @@ def resume():
 def draw(frame_time):
     clear_canvas()
     back_ground.draw()
+    font.draw(330, 500, 'Time: %3.2f' % (time/10), (255, 50, 50))
+    city.draw()
     land.draw()
+    death.draw()
+
     character.draw()
-    character.draw_bb()
     for mob in enemy:
         mob.draw()
-        mob.draw_bb()
+
     update_canvas()
 
 def collide(a, b):

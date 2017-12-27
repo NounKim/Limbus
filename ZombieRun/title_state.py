@@ -8,6 +8,8 @@ image = None
 
 def enter():
     global image
+    bgm = load_music('ruin-wind.wav')
+    bgm.set_volume(64)
     image=load_image('title.png')
 
 
